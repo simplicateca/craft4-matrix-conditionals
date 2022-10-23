@@ -1,0 +1,170 @@
+{# 
+    Craft CMS 4 - matrix-conditionals.twig
+    https://github.com/simplicate-web/craft4-matrix-conditionals
+    Steve Comrie <steve@simplicate.ca>
+#}
+
+{% js %}
+document.addEventListener('DOMContentLoaded', (event) => {
+    matrixConditionals.init( debug = true, {
+
+        // Sample configuration
+        // ---------------------------------------------------------------
+        // // for any `background` field in any block type in the `contentBuilder` matrix field
+        // 'contentBuilder:*:background': {
+
+        //     // if the value is set to "color", show the `backgroundColor` field, otherwise hide it
+        //     'color': {
+        //         'showOnEqual': 'backgroundColor',
+        //         'hideOnUnequal': 'backgroundColor'
+        //     }
+        // },
+
+        // // for the `videoSource` field in any `video` block type in and matrix field
+        // '*:video:videoSource': {
+
+        //     // if the value is set to "youtube", show the `externalUrl` and `coverImage` fields
+        //     'youtube': {
+        //         'showOnEqual': ['externalUrl', 'coverImage'],
+        //     },
+
+        //     // if the value is set to "vimeo", show the `externalUrl` and `coverImage` fields
+        //     'vimeo': {
+        //         'showOnEqual': ['externalUrl', 'coverImage'],
+        //     },
+
+        //     // if the value is set to "localAsset", hide the `externalUrl` and `coverImage` fields, and
+        //     // show the `videoAsset` field, otherwise hide the `videoAsset` field.
+        //     'localAsset': {
+        //         'hideOnEqual': ['externalUrl', 'coverImage'],
+        //         'showOnEqual': ['videoAsset'],
+        //         'hideOnUnequal': ['videoAsset']
+        //     }
+        // }
+    })
+});
+
+const matrixConditionals = {
+
+    findMatchingConditional(value, field, block, matrix) {
+
+        this.currentValue = value
+
+        if( $fullMatch = this.findFieldCondition(`${matrix}:${block}:${field}`) )
+            return $fullMatch
+
+        if( $anyMatrixMatch = this.findFieldCondition(`*:${block}:${field}`) )
+            return $anyMatrixMatch
+
+        if( $anyBlockMatch = this.findFieldCondition(`${matrix}:*:${field}`) )
+            return $anyBlockMatch
+
+        if( $anyField = this.findFieldCondition(`*:*:${field}`) )
+            return $anyField
+    },
+
+    findFieldCondition( condition ) {
+        this.currentCondition = condition
+        return this.config[condition] ?? null
+    },
+
+    evaluateConditions( block, value, conditions ) {
+        const thisObj = this
+        Object.keys(conditions).forEach(function(key, index) {
+            if( typeof this[key] === 'object' && this[key] !== null ) {
+                if( value.toLowerCase() == key.toLowerCase() ) {
+                    thisObj.toggleFields( 'show', block, this[key].showOnEqual ?? [], 'showOnEqual' )
+                    thisObj.toggleFields( 'hide', block, this[key].hideOnEqual ?? [], 'hideOnEqual' )
+                } else {
+                    thisObj.toggleFields( 'show', block, this[key].showOnUnequal ?? [], 'showOnUnequal' )
+                    thisObj.toggleFields( 'hide', block, this[key].hideOnUnequal ?? [], 'hideOnUnequal' )
+                }
+            }
+        }, conditions);
+    },
+
+    toggleFields( onoff = 'show', block, fields, method = '' ) {
+        fields = fields.isArray ? fields : typeof fields == 'object' ? Object.values( fields ) : [fields]
+
+        value = this.currentValue
+        cond  = this.currentCondition
+
+        fields.forEach(function (item, index) {
+            if( toggleMe = block.querySelector(`.field[data-attribute="${item}"]`) ) {    
+                ( onoff == 'hide' )
+                    ? toggleMe.classList.add('matrixConditionals--hidden' )
+                    : toggleMe.classList.remove('matrixConditionals--hidden' )
+
+                if( this.debug ) { console.log( `applying "${value}" for rule matching: ${cond}\n  ${method}: ${item}   (${onoff})`) }
+            }
+        });
+    },
+
+    testField( input ) {
+        const value  = input.value ?? null
+        const field  = input.closest('.field[data-type]:not([data-type=""]') ?? null
+        const block  = field ? field.closest('.matrixblock[data-type]:not([data-type=""]') : null
+        const mf     = block ? block.closest( '.matrix-field' ) : null
+        const matrix = mf ? mf.closest('.field[data-type]:not([data-type=""]') : null
+
+        if( !field || !block || !matrix ) {
+            return
+        }
+
+        if( conditions = this.findMatchingConditional(
+            value,
+            field.dataset.attribute,
+            block.dataset.type,
+            matrix.dataset.attribute
+        )) {
+            this.evaluateConditions( block, value, conditions )
+        }
+    },
+
+    init(debug = false, config) {
+
+        this.config = config
+        this.debug  = ( debug )
+
+        document.addEventListener('input', (event) => {
+            this.testField( event.target )
+        }, false);
+
+        // find all matrix block fields on the page on load, and test each of them against possible conditions
+        const inputs = document.querySelectorAll(".matrix-field .field input,.matrix-field .field select");
+        inputs.forEach((input) => {
+            this.testField( input )
+        });
+
+        // create a mutation observer to watch for when new blocks get added
+        const blockObserver = new MutationObserver(function(mutations) {
+            const addedNodes = mutations[0].addedNodes[0] ?? null;
+            if( addedNodes ) {
+                const dataid = addedNodes.dataset.id ?? ''
+                const inputs = document.querySelectorAll(`.matrixblock[data-id="${dataid}"] input,.matrixblock[data-id="${dataid}"] select`);
+                inputs.forEach((input) => {
+                    matrixConditionals.testField( input )
+                });
+            }
+        });
+
+        // find all the block fields for each matrix field on the page and observe it
+        blockFields = document.querySelectorAll('.matrix.matrix-field>.blocks')
+        blockFields.forEach((blockField) => {
+            blockObserver.observe(blockField, {
+                childList: true
+            });
+        });
+    }
+};
+{% endjs %}
+
+{% css %}
+    .matrixConditionals--hidden {
+        height : 1px !important;
+        max-height : 1px !important;
+        overflow: hidden !important;
+        opacity: 0 !important;
+        margin-bottom: 0 !important;
+    }
+{% endcss %}
