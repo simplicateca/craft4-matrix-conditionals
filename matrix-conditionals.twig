@@ -104,6 +104,10 @@ const matrixConditionals = {
     },
 
     testField( input ) {
+
+        const type   = input.getAttribute('type') ?? null
+        if( type == 'hidden' ) { return }
+
         const value  = input.value ?? null
         const field  = input.closest('.field[data-type]:not([data-type=""]') ?? null
         const block  = field ? field.closest('.matrixblock[data-type]:not([data-type=""]') : null
