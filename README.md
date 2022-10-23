@@ -18,9 +18,9 @@ It's not perfect, but it's better than what we have now :)
 
 ## How to Use
  
-1) Save this file in your `cms/templates` directory.
-2) Any time you add a matrix field to an entry types' field layout, also include this file as a Template UI Element (not necessary if your matrix field doesn't contain any conditionals).
-3) Configure the JavaScript at the top of the file that describes your conditions and actions.
+1) Save the `matrix-conditionals.twig` file some where in your `cms/templates` directory. Maybe a folder like `_cp`.
+2) Configure the JavaScript at the top of the file that describes your conditions and actions.
+3) Any time you add a matrix field to an entry types' field layout, also include this file as a Template UI Element (not necessary if your matrix field doesn't contain any conditionals).
 
 You can have multiple versions of this file if you have multiple matrix fields, but if your fields aren't overly complicated this file can be configured to handle multiple matrix fields at once.
 
