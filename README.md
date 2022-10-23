@@ -1,6 +1,6 @@
 # Craft CMS matrix-conditionals.twig
 
-A twig file that can be added to your Entry Types as a UI Element. Can be configured to with basic conditionals to show / hide fields within a matrix field blocks based on the values of other fields within the same block.
+A twig file that can be added to your Entry Types as a UI Element. Can be configured with basic conditionals to show / hide fields within a matrix field block based on the values of other fields within the same block.
 
 Field conditions and actions are configured within a relatively simple JS object at the top of the file.
 
