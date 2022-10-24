@@ -1,6 +1,6 @@
 # Conditional Matrix Fields for Craft CMS 4.x
 
-This tool is a stop-gap solution until Craft CMS core provides functionality for conditional fields inside matrix blocks.
+This is a stop-gap solution until Craft CMS core provides functionality for conditional fields inside matrix blocks.
 
 This method uses a single twig file (`matrix-conditionals.twig`) that you can drop into your Craft CMS entry type field layouts as a `Template UI Element`.
 
@@ -109,16 +109,24 @@ There are currently no rules for matching against conditions like: value greater
 
 ## All Configuration Options
 
-Conditional rules and actions are set in a simple JSON object at the top of the twig file organized like this:
+Conditional rules and actions are set in a simple JSON object at the top of the twig file.
 
-    'matrixHandle.blockType.fieldHandle' : {
+For each field you want to monitor requires a condition definition that looks something like this:
+
+    'matrixHandle.blockType.fieldHandle': {
         'valueToEvaluate' : {
             showOnEqual   : ['fieldHandles', 'toMakeVisible', 'whenValueMatches'],
             showOnUnequal : ['fieldHandles', 'toMakeVisible', 'whenValueDoesNotMatch'],
             hideOnEqual   : ['fieldHandles', 'toHide', 'whenValueMatches'],
             hideOnUnequal : ['fieldHandles', 'toHide', 'whenValueDoesNotMatch']
-        }
-    }
+        },
+
+        'secondValueToEvaluate': { ... },
+        // etc
+    },
+
+    'matrixHandle.blockType.otherFieldHandle': { ... },
+    // etc
 
 You can have multiple versions of this file if you have multiple matrix fields, but if your rules aren't overly complicated one file can serve multiple matrix fields at the same time.
 
