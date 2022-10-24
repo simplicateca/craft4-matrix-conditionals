@@ -1,4 +1,4 @@
-<!-- LEAVE THIS HTML COMMENT INTACT - Craft gets angry if there's no HTML content in the twig file-->
+<!-- LEAVE THIS HTML COMMENT INTACT - Craft gets angry if there's no HTML content in the twig file -->
 
 {# 
     Craft CMS 4 - matrix-conditionals.twig
@@ -18,20 +18,20 @@ const matrixConditionalsConfig = {
 
         // only show the coverage field if any background is selected
         ':empty:': {
-            'showOnUnequal': 'coverage',
-            'hideOnEqual': 'coverage'
+            showOnUnequal: 'coverage',
+            hideOnEqual: 'coverage'
         },
 
         // this is the same as above, just reversed to use :notempty: instead of :empty:
         // ':notempty:': {
-        //     'showOnEqual': 'coverage',
-        //     'hideOnUnequal': 'coverage',
+        //     showOnEqual: 'coverage',
+        //     hideOnUnequal: 'coverage',
         // },
         
         // if the value is set to "color", show the `backgroundColor` field, otherwise hide it
         'chooseCustom': {
-            'showOnEqual': 'backgroundColor',
-            'hideOnUnequal': 'backgroundColor'
+            showOnEqual: 'backgroundColor',
+            hideOnUnequal: 'backgroundColor'
         }
     },
 
@@ -40,21 +40,21 @@ const matrixConditionalsConfig = {
 
         // if the value is set to "youtube", show the `externalUrl` and `coverImage` fields
         'youtube': {
-            'showOnEqual': ['externalUrl', 'coverImage', 'showRelated'],
-            'hideOnUnequal': 'showRelated'
+            showOnEqual: ['externalUrl', 'coverImage', 'showRelated'],
+            hideOnUnequal: 'showRelated'
         },
 
         // if the value is set to "vimeo", show the `externalUrl` and `coverImage` fields
         'vimeo': {
-            'showOnEqual': ['externalUrl', 'coverImage'],
+            showOnEqual: ['externalUrl', 'coverImage'],
         },
 
         // if the value is set to "localAsset", hide the `externalUrl` and `coverImage` fields, and
         // show the `videoAsset` field, otherwise hide the `videoAsset` field.
         'localAsset': {
-            'hideOnEqual': ['externalUrl', 'coverImage'],
-            'showOnEqual': ['mp4File'],
-            'hideOnUnequal': ['mp4File']
+            hideOnEqual: ['externalUrl', 'coverImage'],
+            showOnEqual: ['mp4File'],
+            hideOnUnequal: ['mp4File']
         }
     } 
 }
@@ -118,7 +118,7 @@ const matrixConditionals = {
                 
                 if( isEqual ) {
                     thisObj.toggleFields( 'show', block, this[key].showOnEqual ?? [], 'showOnEqual' )
-                    thisObj.toggleFields( 'hide', block, this[key].hideOnEqual ?? [], 'hideOnEqual' )
+                    thisObj.toggleFields( 'hide', block, this[key].hideOnEqual ?? [], hideOnEqual: )
                 } else {                    
                     thisObj.toggleFields( 'show', block, this[key].showOnUnequal ?? [], 'showOnUnequal' )
                     thisObj.toggleFields( 'hide', block, this[key].hideOnUnequal ?? [], 'hideOnUnequal' )
@@ -320,6 +320,7 @@ const matrixConditionals = {
 document.addEventListener('DOMContentLoaded', (event) => {
     matrixConditionals.init( debug = true, matrixConditionalsConfig )
 });
+
 {% endjs %}
 
 {% css %}
@@ -329,5 +330,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         overflow: hidden !important;
         opacity: 0 !important;
         margin-bottom: 0 !important;
+        
+        /* uncomment the line below to prevent hidden elements from maintaining their layout position */
+        /* display: none; */
     }
 {% endcss %}
