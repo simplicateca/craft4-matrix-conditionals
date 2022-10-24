@@ -237,25 +237,6 @@ The `backgroundColor` field inside any block type in in the `contentBuilder` mat
 All `backgroundColor` fields inside any block type in any matrix
 
 
-### Matching Empty & Non-Empty Values
-
-You can test whether or not a field is empty by using the special values `:empty:` and `:notempty:`.
-
-This is the most widely supported type of matching across all field types available.
-
-The following configurations will result in the same actions:
-
-    ':empty:': {
-        showOnUnequal: 'coverage',  // show when empty == false
-        hideOnEqual: 'coverage'     // hide when empty == true
-    },
-----
-    ':notempty:': {
-	    showOnEqual: 'coverage',    // show when notempty == true
-        hideOnUnequal: 'coverage'   // hide when notempty == false
-	},
-
-
 ### Show / Hide Actions
 
 Depending on how numerous and complicated your conditional rules are, you may need to list all possible values for a field, but maybe just the one you want to watch for.
@@ -276,6 +257,25 @@ For each of the above action types, we can provide one or more fields to become 
 - Single fields can be passed as a string `'image'` or an array `['image']`
 
 - Multiple fields must always be passed as an array `['image','imagePosition']`
+
+
+### Matching Empty & Non-Empty Values
+
+You can test whether or not a field is empty by using the special values `:empty:` and `:notempty:`.
+
+This is the most widely supported type of matching across all field types available.
+
+The following configurations will result in the same actions:
+
+    ':empty:': {
+        showOnUnequal: 'coverage',  // show when empty == false
+        hideOnEqual: 'coverage'     // hide when empty == true
+    },
+----
+    ':notempty:': {
+	    showOnEqual: 'coverage',    // show when notempty == true
+        hideOnUnequal: 'coverage'   // hide when notempty == false
+	},
 
 
 ### Supported Field Types
@@ -335,7 +335,6 @@ With the above configuration, two checkboxes in the "Customize Button" field, in
 **Lightswitch**
 
 Matches `:empty:` when the swtich is off, and `:notempty:`  when the switch is on.
-
 
 ---
 
