@@ -4,14 +4,18 @@ This tool is a stop-gap solution until Craft CMS provides tools for conditional 
 
 This method uses a single twig file (`matrix-conditionals.twig`) that you can drop into your Craft CMS entry type field layouts as a `Template UI Element`.
 
-Configuration is handled by editing a simple JSON-like structure within the file.
+Configuration is handled by editing a simple JSON-like configuration varible near the top of the twig file.
 
 Developers can create conditional rules for when certain fields appear (or are hidden) based on the value of other fields within the same matrix block.
 
-This tool isn't perfect, and it doesn't do everything, but it's better than what we currently have available :)
+While this method is capable of conditionally hiding or displaying fields for a wide variety of use cases, extremely complicated or interconnected conditions might be difficult (or impossible) to manage with this method.
+
+This tool does not prevent fields from loading and it does not remove them from the form. It simply hides them with CSS, allowing you create a more streamlined user experience for content editors (Hooray for better AX!).
+
+This tool isn't perfect, and it doesn't do everything, but it's better than what we currently have :)
 
 
-## How to Get Started
+## Getting Started
  
 1) Save the `matrix-conditionals.twig` file from this repository to a location in your `cms/templates` directory.
 2) Configure the JavaScript at the top of the twig file to describe your conditional rules and actions based on the configuration information in these instructions.
@@ -26,19 +30,7 @@ No plugins to install. No custom modules or assetbundles to configure. Just a tw
 
 ### Quick Overview
 
-There are no limits to how many fields you can watch, or how many fields you can show/hide based on the value of fields you are watching. While extremely complicated conditions might be difficult to manage with this method, it should suffice for a wide variety of needs.
-
-This tool does not prevent fields from loading and it does not remove them from the form. It simply hides them with CSS, letting you create a more streamlined user experience for content editors (Hooray for better AX!).
-
-**Conditional rules can only match against:**
-
- - Whether a field is `:empty:`
- - Whether a field is `:notempty:`
- - Whether a field has a specific value
-
-There are no rules for matching against conditions like: value greater than, value less than, value contains X, etc.
-
-Here's a sample configuration:
+Sample configuration:
 
     const matrixConditionalsConfig = {
         'contentBuilder.*.background': {
@@ -98,8 +90,20 @@ Both the Coverage field and Custom Color field are visible
 
 ![A field labled "background" with the "Choose Custom" option selected, and fields labled "Coverage" and a Custom Color selector field now visible beside it](https://simplicate.nyc3.digitaloceanspaces.com/simplicate/assets/site/images/github/twig-conditionals/sample-3.jpg)
 
+----
 
-## Configuration
+There are no limits to how many fields you can watch, or how many fields you can show/hide based on the value of fields you are watching.
+
+**Conditional rules can only match against:**
+
+ - Whether a field is `:empty:`
+ - Whether a field is `:notempty:`
+ - Whether a field has a specific value
+
+There are no rules for matching against conditions like: value greater than, value less than, value contains X, etc.
+
+
+## Configuration Options
 
 Conditional rules and actions are set in a simple JSON object at the top of the twig file organized like this:
 
@@ -221,7 +225,7 @@ The `backgroundColor` field inside any block type in in the `contentBuilder` mat
 All `backgroundColor` fields inside any block type in any matrix
 
 
-### Matching Empty & Non-Empty Fields
+### Matching Empty & Non-Empty Values
 
 You can test whether or not a field is empty by using the special values `:empty:` and `:notempty:`.
 
@@ -465,7 +469,7 @@ If a new version breaks anything, we will release an updated version of the code
 
 ## Credits
 
-Brought to you by  [simplicate.ca](https://www.simplicate.ca). Written by Steve Comrie.
+Brought to you by  [simplicate.ca](https://www.simplicate.ca). Written by [Steve Comrie](https://github.com/stevecomrie).
 
 Thanks to [Mats Mikkel Rummelhoff](https://github.com/mmikkel) for suggestions and improvement ideas.
 
