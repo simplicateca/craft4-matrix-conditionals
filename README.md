@@ -18,8 +18,8 @@ This tool isn't perfect and it doesn't do everything but it's better than what w
 ## Getting Started
  
 1) Save the `matrix-conditionals.twig` file from this repository to a location in your `cms/templates` directory.
-2) Configure the JavaScript at the top of the twig file to describe your conditional rules and actions based on the configuration information in these instructions.
-3) Any time you add a matrix field to the field layout for an entry type (and you want to set condition for some of its fields), add a `Template UI Element` below the matrix field that references the `matrix-conditionals.twig` file you saved in step 1.
+2) Configure the JavaScript at the top of the twig file to describe your conditional rules and actions based on the configuration settings documentation.
+3) Any time you add a matrix field to the field layout for an entry type (and you want to set conditions for some of its fields), add a `Template UI Element` below the matrix field that references your `matrix-conditionals.twig` file.
 
 ![Adding the matrix-conditionals.twig file as a Template UI Element in your Entry Type Field Layout](https://simplicate.nyc3.digitaloceanspaces.com/simplicate/assets/site/images/github/twig-conditionals/install.jpg)
 
@@ -104,7 +104,7 @@ There are no limits to how many fields you can watch, or how many fields you can
  - Whether a field is `:notempty:`
  - Whether a field has a specific value
 
-There are no rules for matching against conditions like: value greater than, value less than, value contains X, etc.
+There are currently no rules for matching against conditions like: value greater than, value less than, value contains X, etc.
 
 
 ## All Configuration Options
@@ -120,7 +120,7 @@ Conditional rules and actions are set in a simple JSON object at the top of the 
         }
     }
 
-You can have multiple versions of this file if you have multiple matrix fields, but if your rules aren't overly complicated this file can be configured to handle multiple matrix fields at once.
+You can have multiple versions of this file if you have multiple matrix fields, but if your rules aren't overly complicated one file can serve multiple matrix fields at the same time.
 
 **Sample JavaScript config object:**
 
@@ -302,7 +302,8 @@ Matches `"Exact Number"`  `:empty:`  `:notempty:`
 
 Matches `"optionValue"`only when checked.
 
-_Additional Caveat -_ Checkboxes are evaluated individually, not as a group. They can not be `:empty:` or `:notempty:`
+_Additional Caveat_
+Checkboxes are evaluated individually, not as a group. Avoid attempting to evaluate them against `:empty:` or `:notempty:`
 
 Sample checkbox config:
 
@@ -477,6 +478,6 @@ This tool is also confirmed to function properly if you are using [MatrixMate](h
 
 Brought to you by  [simplicate.ca](https://www.simplicate.ca). Written by [Steve Comrie](https://github.com/stevecomrie).
 
-Thanks to [Mats Mikkel Rummelhoff](https://github.com/mmikkel) for suggestions and improvement ideas.
+Thanks to [Mats Mikkel Rummelhoff](https://github.com/mmikkel) for suggestions on how to improve the functionality.
 
 Bug reports, feedback, and pull requests welcome.
