@@ -103,7 +103,7 @@ There are no limits to how many fields you can watch, or how many fields you can
 There are no rules for matching against conditions like: value greater than, value less than, value contains X, etc.
 
 
-## Configuration Options
+## All Configuration Options
 
 Conditional rules and actions are set in a simple JSON object at the top of the twig file organized like this:
 
@@ -192,7 +192,7 @@ You can have multiple versions of this file if you have multiple matrix fields, 
     }
 
 
-### Identifying Fields
+### Targetting Fields to Watch
 
 Select the fields whose values you want to watch using their full matrix field handle, block type handle, and field handle, with a dot (.) separating each handle. i.e.
 
@@ -244,7 +244,7 @@ The following configurations will result in the same actions:
 	},
 
 
-### Actions on Value Match (or Not Match)
+### Show / Hide Actions
 
 Depending on how numerous and complicated your conditional rules are, you may need to list all possible values for a field, but maybe just the one you want to watch for.
 
@@ -266,14 +266,9 @@ For each of the above action types, we can provide one or more fields to become 
 - Multiple fields must always be passed as an array `['image','imagePosition']`
 
 
-## Field Types
+### Supported Field Types
 
 Most of the standard Craft CMS field types are supported. Not all fields support all conditions.
-
-Some custom fields *might* be supported out of the box, depending on their underlying form control structure.
-
-
-### Supported Field Types
 
  **Dropdown / Select**
 
@@ -369,6 +364,8 @@ Of the above, Date, Email, Money, Time, and URL are the most likely to work out 
 
 Tags and Categories might also be possible, but probably a long shot without additional work. Plus, these field types are either going away or changing drastically soon, so there's not much point in stressing about them.
 
+Some custom fields *might* be supported out of the box, depending on their underlying form control structure, but I can't make any promises and have done minimal testing.
+
 
 ## Alternate Use - Protection Against 'PEBKAC' Errors
 
@@ -448,15 +445,19 @@ Change `debug =  true` to `debug = false` where `matrixConditionals.init` is cal
 When debug is enabled, matching conditions and actions will be logged to the console.
 
 
-## Compatible Craft CMS Versions
+## Compatibility
 
-As of right now, this has been confirmed to work in the following versions of Craft CMS:
+This has been confirmed to work in the following versions of Craft CMS:
 
  - v4.2.7
+
+It's likely that it works in other versions as well, but as some of the fields require knowledge of the underlying HTML & form control structure, it's possible that core changes to that structure may effect some field types.
 
 More versions will be added to this list as they are tested. Please let me know if you have this working successfully on any versions not listed here.
 
 If a new version breaks anything, we will release an updated version of the code tagged to that specific release.
+
+This tool is also confirmed to function properly if you are using [MatrixMate](https://github.com/vaersaagod/matrixmate). However, while it is possible to hide all of the fields within a MatrixMate tab, the tab itself will remain.
 
 
 ## Roadmap
@@ -464,6 +465,7 @@ If a new version breaks anything, we will release an updated version of the code
 - Get additional field types working
 - Test on additional versions of Craft
 - Improve a11y support for fields that are hidden
+- Consider providing the ability to show/hide entire MatrixMate tabs
 - Deprecate entirely once conditional fields in matrix blocks becomes part of the Craft CMS core
 
 
