@@ -246,13 +246,13 @@ This is the most widely supported type of matching across all field types availa
 The following configurations will result in the same actions:
 
     ':empty:': {
-        showOnUnequal: 'coverage',
-        hideOnEqual: 'coverage'
+        showOnUnequal: 'coverage',  // show when empty == false
+        hideOnEqual: 'coverage'     // hide when empty == true
     },
 ----
     ':notempty:': {
-	    showOnEqual: 'coverage',
-        hideOnUnequal: 'coverage'
+	    showOnEqual: 'coverage',    // show when notempty == true
+        hideOnUnequal: 'coverage'   // hide when notempty == false
 	},
 
 
