@@ -1,29 +1,21 @@
 # Craft CMS 4 - Conditional Matrix Fields
 
-This tool is a stop-gap solution until Craft CMS provides tools for conditional fields inside matrix fields.
+This tool is a stop-gap solution until Craft CMS provides tools for conditional fields inside matrix blocks.
 
-This project is a single twig file (`matrix-conditionals.twig`) that you can drop into your Craft CMS entry type field layouts as a `Template UI Element`. Using simple JSON-like configuration within the field, developers can create basic conditional rules for when certain fields appear (or are hidden) based on the value of other fields within the same matrix block.
+This method uses a single twig file (`matrix-conditionals.twig`) that you can drop into your Craft CMS entry type field layouts as a `Template UI Element`.
 
-There are no limits to how many fields you can watch, or how many fields you can show/hide based. However, extremely complicated conditions might be difficult to manage.
+Configuration is handled by editing a simple JSON-like structure within the file.
 
-This tool does not prevent fields from loading, or remove them from the form. It simply hides them with CSS, letting you create a more streamlined user experience for content editors.
+Developers can create conditional rules for when certain fields appear (or are hidden) based on the value of other fields within the same matrix block.
 
-**Conditional rules can only match against:**
-
- - Whether a field is `:empty:`
- - Whether a field is `:notempty:`
- - Whether a field has a specific value
-
-There are no rules for matching against conditions like: greater than, less than, contains X, etc.
-
-It's not perfect, but it's better than what we have now :)
+This tool isn't perfect, and it doesn't do everything, but it's better than what we currently have available :)
 
 
 ## How to Get Started
  
 1) Save the `matrix-conditionals.twig` file from this repository to a location in your `cms/templates` directory.
-2) Configure the JavaScript at the top of the file to describe your conditional rules and actions based on the configuration information in these instructions.
-3) Any time you add a matrix field to an entry types' field layout, also include this file as a `Template UI Element` (not necessary if your matrix field doesn't contain any conditionals).
+2) Configure the JavaScript at the top of the twig file to describe your conditional rules and actions based on the configuration information in these instructions.
+3) Any time you add a matrix field to the field layout for an entry type (and you want to set condition for some of its fields), add a `Template UI Element` below the matrix field that references the `matrix-conditionals.twig` file you saved in step 1.
 
 ![Adding the matrix-conditionals.twig file as a Template UI Element in your Entry Type Field Layout](https://simplicate.nyc3.digitaloceanspaces.com/simplicate/assets/site/images/github/twig-conditionals/install.jpg)
 
@@ -32,9 +24,21 @@ It's not perfect, but it's better than what we have now :)
 No plugins to install. No custom modules or assetbundles to configure. Just a twig file included in your field layout through the Craft admin UI.
 
 
-## Quick Overview
+### Quick Overview
 
-This is an example of how you configure your conditional rules:
+There are no limits to how many fields you can watch, or how many fields you can show/hide based on the value of fields you are watching. While extremely complicated conditions might be difficult to manage with this method, it should suffice for a wide variety of needs.
+
+This tool does not prevent fields from loading and it does not remove them from the form. It simply hides them with CSS, letting you create a more streamlined user experience for content editors (Hooray for better AX!).
+
+**Conditional rules can only match against:**
+
+ - Whether a field is `:empty:`
+ - Whether a field is `:notempty:`
+ - Whether a field has a specific value
+
+There are no rules for matching against conditions like: value greater than, value less than, value contains X, etc.
+
+Here's a sample configuration:
 
     const matrixConditionalsConfig = {
         'contentBuilder.*.background': {
@@ -50,11 +54,11 @@ This is an example of how you configure your conditional rules:
 
         '*.video.videoSource': {
             'youtube': {
-                showOnEqual: 'externalUrl'
+                showOnEqual: ['externalUrl']
             },
             'localAsset': {
-                showOnEqual: 'mp4File',
-                hideOnEqual: 'externalUrl'
+                showOnEqual: ['mp4File'],
+                hideOnEqual: ['externalUrl']
             }
         }
     }
@@ -160,7 +164,17 @@ You can have multiple versions of this file if you have multiple matrix fields, 
             }
         },
 
-        // checkboxes are evaluated independantly as if they were individual lightswitch fields
+        // when the lightswitch field is 'on' make the Light Color and Brightness fields visible
+        '*.*.lightswitch' : {
+            ':notempty:': {
+                showOnEqual: ['lightColor', 'brightness'],
+                hideOnUnequal: ['lightColor', 'brightness']
+            }
+        },
+
+        // [NOTE] checkboxes are evaluated independantly as if they were individual lightswitch fields, not as part of a group
+        // if the `customButtonText` checkbox in the `customizeButton` field is checked, show the `alternateButtonText` field
+        // if the `customButtonColor` checkbox in the `customizeButton` field is checked, show the `alternateButtonColor` field
         '*.*.customizeButton' : {
             'customButtonText': {
                 showOnEqual: 'alternateButtonText',
@@ -171,14 +185,6 @@ You can have multiple versions of this file if you have multiple matrix fields, 
                 hideOnUnequal: 'alternateButtonColor'
             }
         },
-
-        // when the lightswitch field is 'on' make the Light Color and Brightness fields visible
-        '*.*.lightswitch' : {
-            ':notempty:': {
-                showOnEqual: ['lightColor', 'brightness'],
-                hideOnUnequal: ['lightColor', 'brightness']
-            }
-        }
     }
 
 
@@ -215,9 +221,11 @@ The `backgroundColor` field inside any block type in in the `contentBuilder` mat
 All `backgroundColor` fields inside any block type in any matrix
 
 
-### Matching Empty & Non-Empty values
+### Matching Empty & Non-Empty Fields
 
 You can test whether or not a field is empty by using the special values `:empty:` and `:notempty:`.
+
+This is the most widely supported type of matching across all field types available.
 
 The following configurations will result in the same actions:
 
@@ -442,18 +450,23 @@ As of right now, this has been confirmed to work in the following versions of Cr
 
  - v4.2.7
 
-More versions will be added as they are tested. If a new version breaks anything, we will release a version tagged to that specific release.
- 
+More versions will be added to this list as they are tested. Please let me know if you have this working successfully on any versions not listed here.
+
+If a new version breaks anything, we will release an updated version of the code tagged to that specific release.
+
+
 ## Roadmap
 
 - Get additional field types working
 - Test on additional versions of Craft
-- improve a11y flags for fields that are hidden
+- Improve a11y support for fields that are hidden
 - Deprecate entirely once conditional fields in matrix blocks becomes part of the Craft CMS core
 
 
 ## Credits
 
 Brought to you by  [simplicate.ca](https://www.simplicate.ca). Written by Steve Comrie.
+
+Thanks to [Mats Mikkel Rummelhoff](https://github.com/mmikkel) for suggestions and improvement ideas.
 
 Bug reports, feedback, and pull requests welcome.
