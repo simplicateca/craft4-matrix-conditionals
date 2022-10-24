@@ -1,6 +1,6 @@
-# Craft CMS 4 - Conditional Matrix Fields
+# Conditional Matrix Fields for Craft CMS 4.x
 
-This tool is a stop-gap solution until Craft CMS provides tools for conditional fields inside matrix blocks.
+This tool is a stop-gap solution until Craft CMS core provides functionality for conditional fields inside matrix blocks.
 
 This method uses a single twig file (`matrix-conditionals.twig`) that you can drop into your Craft CMS entry type field layouts as a `Template UI Element`.
 
