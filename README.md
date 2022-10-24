@@ -111,7 +111,7 @@ There are currently no rules for matching against conditions like: value greater
 
 Conditional rules and actions are set in a simple JSON object at the top of the twig file.
 
-For each field you want to monitor requires a condition definition that looks something like this:
+Each field you want to monitor requires a condition definition that looks something like this:
 
     'matrixHandle.blockType.fieldHandle': {
         'valueToEvaluate' : {
