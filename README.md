@@ -8,11 +8,11 @@ Configuration is handled by editing a simple JSON-like configuration varible nea
 
 Developers can create conditional rules for when certain fields appear (or are hidden) based on the value of other fields within the same matrix block.
 
-While this method is capable of conditionally hiding or displaying fields for a wide variety of use cases, extremely complicated or interconnected conditions might be difficult (or impossible) to manage with this method.
+While capable of conditionally hiding or displaying fields for a wide variety of use cases, extremely complicated or interconnected conditions might be difficult (or impossible) to manage with this method.
 
-This tool does not prevent fields from loading and it does not remove them from the form. It simply hides them with CSS, allowing you create a more streamlined user experience for content editors (Hooray for better AX!).
+This tool does not prevent fields from loading, does not remove them from the form, and does not prevent hidden fields from being saved to the database. It simply hides them with CSS, allowing you create a more streamlined user experience for content editors (Hooray for better AX!).
 
-This tool isn't perfect, and it doesn't do everything, but it's better than what we currently have :)
+This tool isn't perfect and it doesn't do everything but it's better than what we currently have :)
 
 
 ## Getting Started
@@ -25,7 +25,7 @@ This tool isn't perfect, and it doesn't do everything, but it's better than what
 
 **That's it.**
 
-No plugins to install. No custom modules or assetbundles to configure. Just a twig file included in your field layout through the Craft admin UI.
+No plugins to install. No custom modules or assetbundles to configure. Just a twig file included in your field layout through the Craft CMS Admin UI.
 
 
 ### Quick Overview
@@ -46,8 +46,12 @@ Sample configuration:
 
         '*.video.videoSource': {
             'youtube': {
-                showOnEqual: ['externalUrl']
+                showOnEqual: ['externalUrl', 'youtubeEmbedParams'],
+                hideOnUnequal: 'youtubeEmbedParams'
             },
+            'vimeo': {
+                showOnEqual: ['externalUrl']
+            },            
             'localAsset': {
                 showOnEqual: ['mp4File'],
                 hideOnEqual: ['externalUrl']
@@ -63,7 +67,7 @@ The above config would react to changes in the values of two fields:
 
 Based on the value of the `background` field, the fields `coverage` and `backgroundColor` would be revealed or hidden.
 
-Based on the value of the `videoSource` field, the fields `externalUrl` and `mp4File` would be revealed or hidden.
+Based on the value of the `videoSource` field, the fields `externalUrl`, `youtubeEmbedParams`, and `mp4File` would be revealed or hidden.
 
 
 Here are some screenshots of what this would look like for the `background` field:
@@ -108,7 +112,7 @@ There are no rules for matching against conditions like: value greater than, val
 Conditional rules and actions are set in a simple JSON object at the top of the twig file organized like this:
 
     'matrixHandle.blockType.fieldHandle' : {
-        'valueToWatchFor' : {
+        'valueToEvaluate' : {
             showOnEqual   : ['fieldHandles', 'toMakeVisible', 'whenValueMatches'],
             showOnUnequal : ['fieldHandles', 'toMakeVisible', 'whenValueDoesNotMatch'],
             hideOnEqual   : ['fieldHandles', 'toHide', 'whenValueMatches'],
